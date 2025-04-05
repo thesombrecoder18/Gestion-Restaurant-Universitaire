@@ -1,3 +1,4 @@
+CREATE DATABASE IF NOT EXISTS gestion_restaurant;
 USE gestion_restaurant;
 
 -- Table Utilisateur (Classe parent)
