@@ -1,0 +1,26 @@
+{
+  "name": "projet_resto",
+  "version": "1.0.0",
+  "description": "ce projet vise à créer une plateforme de digitalisation du restaurant de l'esp",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thesombrecoder18/Gestion-Restaurant-Universitaire.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/thesombrecoder18/Gestion-Restaurant-Universitaire/issues"
+  },
+  "homepage": "https://github.com/thesombrecoder18/Gestion-Restaurant-Universitaire#readme",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "express": "^5.1.0",
+    "mysql": "^2.18.1",
+    "nodemon": "^3.1.9"
+  }
+}
