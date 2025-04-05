@@ -1,33 +1,19 @@
-// Exemple de base de données en mémoire, à remplacer par une vraie base de données
-let tickets = [
-    { id: 1, type: 'Petit-déjeuner', prix: 500 },
-    { id: 2, type: 'Déjeuner', prix: 1000 },
-  ];
-  
-  // Obtenir tous les tickets
-  const getAllTickets = (req, res) => {
-    res.json(tickets);
-  };
-  
-  // Ajouter un ticket
-  const createTicket = (req, res) => {
-    const { type, prix } = req.body;
-    const newTicket = { id: tickets.length + 1, type, prix };
-    tickets.push(newTicket);
-    res.status(201).json(newTicket);
-  };
-  
-  // Obtenir un ticket par ID
-  const getTicketById = (req, res) => {
-    const ticketId = parseInt(req.params.id);
-    const ticket = tickets.find(t => t.id === ticketId);
-    
-    if (!ticket) {
-      return res.status(404).send('Ticket non trouvé');
-    }
-  
-    res.json(ticket);
-  };
-  
-  module.exports = { getAllTickets, createTicket, getTicketById };
-  
+exports.getAllTickets = (req, res) => {
+  // Implémentation de la récupération de tous les tickets
+};
+
+exports.getTicketById = (req, res) => {
+  // Implémentation de la récupération des détails d'un ticket
+};
+
+exports.createTicket = (req, res) => {
+  // Implémentation de la création d'un ticket
+};
+
+exports.updateTicket = (req, res) => {
+  // Implémentation de la mise à jour d'un ticket
+};
+
+exports.deleteTicket = (req, res) => {
+  // Implémentation de la suppression d'un ticket
+};
