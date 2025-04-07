@@ -2,7 +2,7 @@ const mysql = require('mysql');
 
 const connection = mysql.createConnection({
     host: 'localhost',
-    user: 'root', // Remplacez par votre utilisateur MySQL
+    user: 'ipdl', // Remplacez par votre utilisateur MySQL
     password: 'passer', // Remplacez par votre mot de passe MySQL
     database: 'gestion_restaurant'
 });
