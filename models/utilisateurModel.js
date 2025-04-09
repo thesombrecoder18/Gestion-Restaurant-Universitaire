@@ -9,31 +9,31 @@ const UtilisateurModel = {
       INSERT INTO utilisateur (Nom, Prenom, Mot_de_passe, Email, Sexe, dateNaissance, Role)
       VALUES (?, ?, ?, ?, ?, ?, ?)
     `;
-    const result =db.query(query, [Nom, Prenom, hashedPassword, Email, Sexe, dateNaissance, Role], (err, result) => {
-      if (err) {
-        console.error('Erreur lors de la création de l\'utilisateur :', err);
-        return;
-      }});
-      console.log('Utilisateur créé avec succès, ID:', result.insertId);
-    return new Utilisateur({ Id_Utilisateur: result.insertId, Nom, Prenom, Mot_de_passe: hashedPassword, Email, Sexe, dateNaissance, Role });
+
+    const [result] = await db.execute(query, [Nom, Prenom, hashedPassword, Email, Sexe, dateNaissance, Role]);
+    console.log('Utilisateur créé avec succès, ID:', result.insertId);
+
+    return new Utilisateur({
+      Id_Utilisateur: result.insertId,
+      Nom,
+      Prenom,
+      Mot_de_passe: hashedPassword,
+      Email,
+      Sexe,
+      dateNaissance,
+      Role
+    });
   },
 
-  async  findByEmail(Email) {
-    return new Promise((resolve, reject) => {
-      const query = 'SELECT * FROM utilisateur WHERE Email = ?';
-      db.query(query, [Email], (err, results) => {
-        if (err) {
-          console.error('Erreur SQL :', err);
-          return reject(err);
-        }
-  
-        if (results.length === 0) {
-          return resolve(null);
-        }
-  
-        const utilisateur = new Utilisateur(results[0]);
-        return resolve(utilisateur);
-      })});
+  async findByEmail(Email) {
+    const query = 'SELECT * FROM utilisateur WHERE Email = ?';
+    const [rows] = await db.execute(query, [Email]);
+
+    if (rows.length === 0) {
+      return null;
+    }
+
+    return new Utilisateur(rows[0]);
   },
 
   async updatePassword(Email, nouveauMotDePasse) {

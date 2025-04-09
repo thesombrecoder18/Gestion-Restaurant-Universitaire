@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt');
 const UtilisateurModel = require('../models/utilisateurModel');
 
+// Enregistrement d'un utilisateur
 exports.register = async (req, res) => {
   const { Nom, Prenom, Mot_de_passe, Email, Sexe, dateNaissance, Role } = req.body;
 
@@ -9,8 +10,15 @@ exports.register = async (req, res) => {
       return res.status(400).json({ message: 'Tous les champs sont obligatoires.' });
     }
 
-    const utilisateur = await UtilisateurModel.create({ Nom, Prenom, Mot_de_passe, Email, Sexe, dateNaissance, Role });
-    res.status(201).json({ message: 'Utilisateur enregistré avec succès.', utilisateur });
+    const utilisateur = await UtilisateurModel.create({
+      Nom, Prenom, Mot_de_passe, Email, Sexe, dateNaissance, Role
+    });
+
+    // Supprimer le mot de passe avant d’envoyer l’utilisateur
+    const safeUser = { ...utilisateur };
+    delete safeUser.Mot_de_passe;
+
+    res.status(201).json({ message: 'Utilisateur enregistré avec succès.', utilisateur: safeUser });
   } catch (error) {
     if (error.code === 'ER_DUP_ENTRY') {
       res.status(400).json({ message: 'Cet email est déjà utilisé.' });
@@ -21,6 +29,7 @@ exports.register = async (req, res) => {
   }
 };
 
+// Connexion de l'utilisateur
 exports.login = async (req, res) => {
   const { Email, Mot_de_passe } = req.body;
 
@@ -30,7 +39,6 @@ exports.login = async (req, res) => {
     }
 
     const utilisateur = await UtilisateurModel.findByEmail(Email);
-    console.log('Utilisateur trouvé controleur:', utilisateur); // Debugging line
     if (!utilisateur) {
       return res.status(404).json({ message: 'Utilisateur non trouvé.' });
     }
@@ -40,16 +48,22 @@ exports.login = async (req, res) => {
       return res.status(401).json({ message: 'Mot de passe incorrect.' });
     }
 
-    res.status(200).json({ message: 'Connexion réussie.', utilisateur });
+    const safeUser = { ...utilisateur };
+    delete safeUser.Mot_de_passe;
+
+    res.status(200).json({ message: 'Connexion réussie.', utilisateur: safeUser });
   } catch (error) {
+    console.error('Erreur lors de la connexion :', error);
     res.status(500).json({ message: 'Erreur serveur.', error });
   }
 };
 
+// Déconnexion (statique pour l’instant)
 exports.logout = (req, res) => {
   res.status(200).json({ message: 'Déconnexion réussie.' });
 };
 
+// Changement de mot de passe
 exports.changePassword = async (req, res) => {
   const { Email, ancienMotDePasse, nouveauMotDePasse } = req.body;
 
@@ -69,12 +83,14 @@ exports.changePassword = async (req, res) => {
     }
 
     const hashedPassword = await UtilisateurModel.updatePassword(Email, nouveauMotDePasse);
-    res.status(200).json({ message: 'Mot de passe changé avec succès.', hashedPassword });
+    res.status(200).json({ message: 'Mot de passe changé avec succès.' });
   } catch (error) {
+    console.error('Erreur lors du changement de mot de passe :', error);
     res.status(500).json({ message: 'Erreur serveur.', error });
   }
 };
 
+// Simulation de récupération de compte
 exports.recoverAccount = async (req, res) => {
   const { Email } = req.body;
 
@@ -88,8 +104,10 @@ exports.recoverAccount = async (req, res) => {
       return res.status(404).json({ message: 'Utilisateur non trouvé.' });
     }
 
-    res.status(200).json({ message: 'Email de récupération envoyé.' });
+    // À ce stade tu pourrais générer un token ou envoyer un email
+    res.status(200).json({ message: 'Email de récupération envoyé (simulation).' });
   } catch (error) {
+    console.error('Erreur lors de la récupération :', error);
     res.status(500).json({ message: 'Erreur serveur.', error });
   }
 };

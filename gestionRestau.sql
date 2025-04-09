@@ -81,3 +81,42 @@ CREATE TABLE TicketResto (
     FOREIGN KEY (Id_Ticket) REFERENCES Ticket(Id_Ticket) ON DELETE CASCADE,
     FOREIGN KEY (Id_Restaurant) REFERENCES Restaurant(Id_Restaurant) ON DELETE CASCADE
 );
+
+CREATE TABLE IF NOT EXISTS VenteTicket (
+    Id_Vente INT AUTO_INCREMENT PRIMARY KEY,
+    Id_Ticket INT,
+    Id_Etudiant INT,
+    DateVente DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (Id_Ticket) REFERENCES Ticket(Id_Ticket) ON DELETE CASCADE,
+    FOREIGN KEY (Id_Etudiant) REFERENCES Etudiant(Id_Etudiant) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS ValidationTicket (
+    Id_Validation INT AUTO_INCREMENT PRIMARY KEY,
+    Id_Vente INT,
+    Id_Agent INT,
+    DateValidation DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (Id_Vente) REFERENCES VenteTicket(Id_Vente) ON DELETE CASCADE,
+    FOREIGN KEY (Id_Agent) REFERENCES Utilisateur(Id_Utilisateur) ON DELETE CASCADE
+);
+
+-- Table PlatsServis (Manquante)
+CREATE TABLE IF NOT EXISTS PlatsServis (
+    Id_PlatServi INT AUTO_INCREMENT PRIMARY KEY,
+    Id_Etudiant INT,
+    Id_Ticket INT,
+    Id_Menu INT,
+    DateServi DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (Id_Etudiant) REFERENCES Etudiant(Id_Etudiant) ON DELETE CASCADE,
+    FOREIGN KEY (Id_Ticket) REFERENCES Ticket(Id_Ticket) ON DELETE CASCADE,
+    FOREIGN KEY (Id_Menu) REFERENCES Menu(Id_Menu) ON DELETE CASCADE
+);
+
+-- Table Statistiques (Facultatif)
+CREATE TABLE IF NOT EXISTS Statistiques (
+    Id_Statistique INT AUTO_INCREMENT PRIMARY KEY,
+    DateStat DATE NOT NULL,
+    Recette INT NOT NULL,
+    PlatsServis INT NOT NULL,
+    TicketsVendus INT NOT NULL
+);
