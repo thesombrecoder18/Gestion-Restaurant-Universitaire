@@ -1,4 +1,5 @@
 const db = require('../config/db');
+const GerantEntity = require('../entities/gerantEntity');
 
 const GerantModel = {
   // Enregistrer une vente de ticket (table VenteTicket)
@@ -22,6 +23,34 @@ const GerantModel = {
     } catch (err) {
       console.error('Erreur SQL lors de l\'enregistrement du plat servi :', err);
       throw new Error('Erreur lors de l\'enregistrement du plat servi');
+    }
+  },
+
+  // Obtenir un gérant par son ID
+  async getGerantById(id) {
+    const query = `SELECT * FROM Gerant WHERE Id_Gerant = ?`;
+    try {
+      const [rows] = await db.execute(query, [id]);
+      if (rows.length === 0) {
+        throw new Error('Gérant non trouvé');
+      }
+      const { Id_Gerant, Nom, Prenom, Email } = rows[0];
+      return new GerantEntity(Id_Gerant, Nom, Prenom, Email); // Retourne une instance de GerantEntity
+    } catch (err) {
+      console.error('Erreur SQL lors de la récupération du gérant :', err);
+      throw new Error('Erreur lors de la récupération du gérant');
+    }
+  },
+
+  // Obtenir tous les gérants
+  async getAllGerants() {
+    const query = `SELECT * FROM Gerant`;
+    try {
+      const [rows] = await db.execute(query);
+      return rows.map(row => new GerantEntity(row.Id_Gerant, row.Nom, row.Prenom, row.Email)); // Retourne une liste d'entités
+    } catch (err) {
+      console.error('Erreur SQL lors de la récupération des gérants :', err);
+      throw new Error('Erreur lors de la récupération des gérants');
     }
   },
 
