@@ -6,7 +6,7 @@ const UtilisateurModel = {
   async create({ Nom, Prenom, Mot_de_passe, Email, Sexe, dateNaissance, Role }) {
     const hashedPassword = await bcrypt.hash(Mot_de_passe, 10);
     const query = `
-      INSERT INTO utilisateur (Nom, Prenom, Mot_de_passe, Email, Sexe, dateNaissance, Role)
+      INSERT INTO Utilisateur (Nom, Prenom, Mot_de_passe, Email, Sexe, dateNaissance, Role)
       VALUES (?, ?, ?, ?, ?, ?, ?)
     `;
 
@@ -26,7 +26,7 @@ const UtilisateurModel = {
   },
 
   async findByEmail(Email) {
-    const query = 'SELECT * FROM utilisateur WHERE Email = ?';
+    const query = 'SELECT * FROM Utilisateur WHERE Email = ?';
     const [rows] = await db.execute(query, [Email]);
 
     if (rows.length === 0) {
@@ -38,7 +38,7 @@ const UtilisateurModel = {
 
   async updatePassword(Email, nouveauMotDePasse) {
     const hashedPassword = await bcrypt.hash(nouveauMotDePasse, 10);
-    const query = 'UPDATE utilisateur SET Mot_de_passe = ? WHERE Email = ?';
+    const query = 'UPDATE Utilisateur SET Mot_de_passe = ? WHERE Email = ?';
     await db.execute(query, [hashedPassword, Email]);
     return hashedPassword;
   }
