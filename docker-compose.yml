@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  backend:
+    build: .
+    ports:
+      - "6001:6001"
+    depends_on:
+      - db
+    environment:
+      - DB_HOST=db
+      - DB_USER=ipdl
+      - DB_PASSWORD=passer
+      - DB_NAME=gestion_restaurant
+    volumes:
+      - ./:/app
+
+  db:
+    image: mysql:8
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: passer
+      MYSQL_DATABASE: gestion_restaurant
+    volumes:
+      - dbdata:/var/lib/mysql
+      # Optionnel : pour initialiser la BDD via un script SQL
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "3307:3306"
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - "8080:8080"
+
+volumes:
+  dbdata:

@@ -1,4 +1,4 @@
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const UtilisateurModel = require('../models/utilisateurModel');
 
 // Enregistrement d'un utilisateur

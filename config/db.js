@@ -2,7 +2,7 @@
 const mysql = require('mysql2/promise'); 
 
 const pool = mysql.createPool({
-  host: 'localhost',
+  host: 'db',
   user: 'ipdl',
   password: 'passer',
   database: 'gestion_restaurant',

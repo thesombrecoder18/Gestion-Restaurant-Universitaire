@@ -28,7 +28,7 @@ const GerantModel = {
 
   // Obtenir un gérant par son ID
   async getGerantById(id) {
-    const query = `SELECT * FROM Gerant WHERE Id_Gerant = ?`;
+    const query = `SELECT * FROM GerantResto WHERE Id_Gerant = ?`;
     try {
       const [rows] = await db.execute(query, [id]);
       if (rows.length === 0) {
@@ -44,7 +44,7 @@ const GerantModel = {
 
   // Obtenir tous les gérants
   async getAllGerants() {
-    const query = `SELECT * FROM Gerant`;
+    const query = `SELECT * FROM GerantResto`;
     try {
       const [rows] = await db.execute(query);
       return rows.map(row => new GerantEntity(row.Id_Gerant, row.Nom, row.Prenom, row.Email)); // Retourne une liste d'entités

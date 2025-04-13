@@ -1,6 +1,6 @@
 const EtudiantModel = require('../models/etudiantModel');
 const UtilisateurModel = require('../models/utilisateurModel');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 
 exports.acheterTicket = async (req, res) => {
   const { idEtudiant, idTicket } = req.body;
