@@ -1,10 +1,11 @@
 const express = require('express');
 const app = express();
+const cors = require('cors');
 const port = 6001;
 
 // Middleware pour parser les données JSON
 app.use(express.json());
-
+app.use(cors());
 // Importation des routes
 const utilisateurRoutes = require('./routes/utilisateur');
 const ticketRoutes = require('./routes/ticket');
