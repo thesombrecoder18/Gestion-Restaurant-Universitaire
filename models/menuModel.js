@@ -4,7 +4,7 @@ const db = require('../config/db');
 const Menu = require('../entities/menuEntity');
 
 const MenuModel = {
-    async create({ Nom, Plat, Id_Restaurant }) {
+    async createMenu({ Nom, Plat, Id_Restaurant }) {
         return new Promise((resolve, reject) => {
             const query = `
         INSERT INTO Menu (Nom, Plat, Id_Restaurant)

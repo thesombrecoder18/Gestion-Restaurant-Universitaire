@@ -3,6 +3,7 @@ const utilisateurController = require('./utilisateurController');
 const RestaurateurModel = require('../models/restaurateurModel');
 const MenuModel = require('../models/menuModel');
 
+
 // Reuse des fonctions utilisateurController
 exports.login = utilisateurController.login;
 exports.logout = utilisateurController.logout;
@@ -69,6 +70,8 @@ exports.createMenu = async (req, res) => {
   
     try {
         const menu = await RestaurateurModel.createMenu(req.body);
+
+        console.log("Menu créé :", menu);
         
         res.status(201).json({
           success: true,
