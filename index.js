@@ -11,6 +11,8 @@ const ticketRoutes = require('./routes/ticket');
 const restaurantRoutes = require('./routes/restaurant');
 const menuRoutes = require('./routes/menu');
 const gestionRestoRoutes = require('./routes/gestionResto');
+const agentRoutes = require('./routes/agent');
+
 
 // Utilisation des routes
 app.use('/api/utilisateurs', utilisateurRoutes);
@@ -18,7 +20,11 @@ app.use('/api/tickets', ticketRoutes);
 app.use('/api/restaurants', restaurantRoutes);
 app.use('/api/menus', menuRoutes);
 app.use('/api/gestion-resto', gestionRestoRoutes);
+app.use('/api/agents', agentRoutes);
+
 
 app.listen(port, () => {
   console.log(`Serveur démarré sur http://localhost:${port}`);
 });
+
+

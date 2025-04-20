@@ -9,7 +9,8 @@ router.post('/register', agentController.creerAgent);
 router.get('/:Id_Utilisateur/historique', agentController.getHistoriqueValidations);
 
 //valider un ticket via qr code 
-router.post('\valider-ticket', agentController.validerTicket);
+router.post('/valider-ticket', agentController.validerTicket);
 
 
 module.exports = router;
+
