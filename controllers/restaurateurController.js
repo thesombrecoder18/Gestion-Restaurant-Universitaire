@@ -16,26 +16,7 @@ exports.register = async (req, res) => {
   return utilisateurController.register(req, res);
 };
 
-// Créer un menu
-/*exports.createMenu = async (req, res) => {
-    const { Nom, Plat, Id_Restaurant } = req.body;
-  
-    try {
-      if (!Nom || !Plat || !Id_Restaurant) {
-        return res.status(400).json({ message: 'Tous les champs sont obligatoires.' });
-      }
-  
-      const menu = await RestaurateurModel.createMenu({ Nom, Plat, Id_Restaurant });
-      res.status(201).json({ message: 'Menu créé avec succès.', menu });
-    } catch (error) {
-      if (error.code === 'ER_NO_REFERENCED_ROW_2') {
-        res.status(400).json({ message: 'Le restaurant spécifié n\'existe pas.' });
-      } else {
-        console.error('Erreur lors de la création du menu :', error);
-        res.status(500).json({ message: 'Erreur serveur.', error });
-      }
-    }
-  };*/
+
 
 // Consulter tous les menus du restaurateur connecté
 exports.consulterMenus = async (req, res) => {

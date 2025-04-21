@@ -23,30 +23,6 @@ const RestaurateurModel = {
     });
   },
 
-  /*async createMenu({ Nom, Plat, Id_Restaurant }) {
-    return new Promise((resolve, reject) => {
-      const query = `
-        INSERT INTO Menu (Nom, Plat, Id_Restaurant)
-        VALUES (?, ?, ?)
-      `;
-      console.log("DEBUG INSERT:", Nom, Plat, Id_Restaurant);
-
-      db.query(query, [Nom, Plat, Id_Restaurant], (err, result) => {
-        if (err) {
-          console.error('Erreur lors de la création du menu :', err);
-          return reject(err);
-        }
-        const menu = {
-          Id_Menu: result.insertId,
-          Nom,
-          Plat,
-          Id_Restaurant
-        };
-        resolve(menu);
-      });
-    });
-  },
-  */
   async createMenu({ Nom, Plat, Id_Restaurant }) {
     const query = "INSERT INTO Menu (Nom, Plat, Id_Restaurant) VALUES (?, ?, ?)";
 
@@ -59,25 +35,6 @@ const RestaurateurModel = {
     }
   },
 
-  /*async consulterMenus(idRestaurateur) {
-    return new Promise((resolve, reject) => {
-      const query = `
-        SELECT m.* 
-        FROM Menu m
-        JOIN RestaurateurMenu rm ON m.Id_Menu = rm.Id_Menu
-        WHERE rm.Id_Utilisateur = ?
-      `;
-      db.query(query, [idRestaurateur], (err, results) => {
-        if (err) {
-          console.error('Erreur lors de la récupération des menus :', err);
-          return reject(err);
-        }
-
-        resolve(results); // Liste des menus associés à ce restaurateur
-      });
-
-    })
-  },*/
 
   async consulterMenus(idRestaurateur) {
     const query = `
