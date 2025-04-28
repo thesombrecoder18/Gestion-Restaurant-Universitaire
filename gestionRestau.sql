@@ -20,6 +20,12 @@ CREATE TABLE IF NOT EXISTS Ticket (
     Type ENUM('Petit-déjeuner', 'Déjeuner', 'Dîner') NOT NULL,
     Prix INT NOT NULL
 );
+ALTER TABLE Ticket
+ADD CONSTRAINT CHK_Prix CHECK (
+    (Type = 'Petit-déjeuner' AND Prix = 50) OR
+    (Type IN ('Déjeuner', 'Dîner') AND Prix = 100)
+);
+
 
 -- Table Étudiant (Hérite de Utilisateur)
 CREATE TABLE IF NOT EXISTS Etudiant (
