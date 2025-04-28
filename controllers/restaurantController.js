@@ -1,33 +1,60 @@
-// Exemple de base de données en mémoire, à remplacer par une vraie base de données
-let restaurants = [
-    { id: 1, nom: 'Restaurant Universitaire 1' },
-    { id: 2, nom: 'Restaurant Universitaire 2' },
-  ];
-  
-  // Obtenir tous les restaurants
-  const getAllRestaurants = (req, res) => {
-    res.json(restaurants);
-  };
-  
-  // Ajouter un restaurant
-  const createRestaurant = (req, res) => {
-    const { nom } = req.body;
-    const newRestaurant = { id: restaurants.length + 1, nom };
-    restaurants.push(newRestaurant);
-    res.status(201).json(newRestaurant);
-  };
-  
-  // Obtenir un restaurant par ID
-  const getRestaurantById = (req, res) => {
-    const restaurantId = parseInt(req.params.id);
-    const restaurant = restaurants.find(r => r.id === restaurantId);
-    
-    if (!restaurant) {
-      return res.status(404).send('Restaurant non trouvé');
+const RestaurantModel = require('../models/restaurantModel');
+
+// Ajouter un restaurant
+exports.createRestaurant = async (req, res) => {
+  const { Nom } = req.body;
+
+  try {
+    if (!Nom) {
+      return res.status(400).json({ message: 'Le nom du restaurant est obligatoire.' });
     }
-  
-    res.json(restaurant);
-  };
-  
-  module.exports = { getAllRestaurants, createRestaurant, getRestaurantById };
-  
+
+    // Vérification si un restaurant avec le même nom existe déjà
+    const existingRestaurant = await RestaurantModel.findByName(Nom);
+    if (existingRestaurant) {
+      return res.status(400).json({ message: 'Un restaurant avec ce nom existe déjà.' });
+    }
+
+    // Si pas trouvé, alors on crée
+    const restaurant = await RestaurantModel.create({ Nom });
+    res.status(201).json({ message: 'Restaurant créé avec succès.', restaurant });
+  } catch (error) {
+    console.error('Erreur lors de la création du restaurant :', error);
+
+    // Gestion spéciale pour erreur SQL Duplicate Entry
+    if (error.code === 'ER_DUP_ENTRY') {
+      return res.status(400).json({ message: 'Un restaurant avec ce nom existe déjà (via base de données).' });
+    }
+
+    res.status(500).json({ message: 'Erreur serveur.', error });
+  }
+};
+
+
+// Obtenir tous les restaurants
+exports.getAllRestaurants = async (req, res) => {
+  try {
+    const restaurants = await RestaurantModel.findAll();
+    res.status(200).json(restaurants);
+  } catch (error) {
+    console.error('Erreur lors de la récupération des restaurants :', error);
+    res.status(500).json({ message: 'Erreur serveur.', error });
+  }
+};
+// Obtenir un restaurant par ID
+exports.getRestaurantById = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const restaurant = await RestaurantModel.findById(id);
+
+    if (!restaurant) {
+      return res.status(404).json({ message: 'Restaurant non trouvé.' });
+    }
+
+    res.status(200).json(restaurant);
+  } catch (error) {
+    console.error('Erreur lors de la récupération du restaurant :', error);
+    res.status(500).json({ message: 'Erreur serveur.', error });
+  }
+};

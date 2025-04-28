@@ -2,7 +2,7 @@ CREATE DATABASE IF NOT EXISTS gestion_restaurant;
 USE gestion_restaurant;
 
 -- Table Utilisateur (Classe parent)
-CREATE TABLE Utilisateur (
+CREATE TABLE IF NOT EXISTS Utilisateur (
     Id_Utilisateur INT AUTO_INCREMENT PRIMARY KEY,
     Nom VARCHAR(50) NOT NULL,
     Prenom VARCHAR(50) NOT NULL,
@@ -15,14 +15,14 @@ CREATE TABLE Utilisateur (
 );
 
 -- Table Ticket
-CREATE TABLE Ticket (
+CREATE TABLE IF NOT EXISTS Ticket (
     Id_Ticket INT PRIMARY KEY AUTO_INCREMENT,
     Type ENUM('Petit-déjeuner', 'Déjeuner', 'Dîner') NOT NULL,
     Prix INT NOT NULL
 );
 
 -- Table Étudiant (Hérite de Utilisateur)
-CREATE TABLE Etudiant (
+CREATE TABLE IF NOT EXISTS Etudiant (
     Id_Etudiant INT PRIMARY KEY AUTO_INCREMENT,
     Id_Utilisateur INT UNIQUE,
     numEtudiant VARCHAR(20) UNIQUE NOT NULL,
@@ -32,13 +32,15 @@ CREATE TABLE Etudiant (
 );
 
 -- Table Restaurant
-CREATE TABLE Restaurant (
+CREATE TABLE IF NOT EXISTS Restaurant (
     Id_Restaurant INT PRIMARY KEY AUTO_INCREMENT,
     Nom VARCHAR(50) NOT NULL
 );
+ALTER TABLE Restaurant
+ADD CONSTRAINT unique_restaurant_name UNIQUE (Nom);
 
 -- Relation entre Gérant et Restaurant (1,n)
-CREATE TABLE GerantResto (
+CREATE TABLE IF NOT EXISTS GerantResto (
     Id_Utilisateur INT,
     Id_Restaurant INT,
     PRIMARY KEY (Id_Utilisateur, Id_Restaurant),
@@ -47,7 +49,7 @@ CREATE TABLE GerantResto (
 );
 
 -- Relation entre Restaurateur et Restaurant (1,n)
-CREATE TABLE GestionResto (
+CREATE TABLE IF NOT EXISTS GestionResto (
     Id_Utilisateur INT,
     Id_Restaurant INT,
     PRIMARY KEY (Id_Utilisateur, Id_Restaurant),
@@ -56,7 +58,7 @@ CREATE TABLE GestionResto (
 );
 
 -- Table Menu
-CREATE TABLE Menu (
+CREATE TABLE IF NOT EXISTS Menu (
     Id_Menu INT PRIMARY KEY AUTO_INCREMENT,
     Nom VARCHAR(50) NOT NULL,
     Plat VARCHAR(255) NOT NULL,
@@ -66,7 +68,7 @@ CREATE TABLE Menu (
 
 
 -- Relation entre Restaurateur et Menu (1,n)
-CREATE TABLE RestaurateurMenu (
+CREATE TABLE IF NOT EXISTS RestaurateurMenu (
     Id_Utilisateur INT,
     Id_Menu INT,
     PRIMARY KEY (Id_Utilisateur, Id_Menu),
@@ -75,7 +77,7 @@ CREATE TABLE RestaurateurMenu (
 );
 
 -- Relation entre Ticket et Restaurant (n,1)
-CREATE TABLE TicketResto (
+CREATE TABLE IF NOT EXISTS TicketResto (
     Id_Ticket INT,
     Id_Restaurant INT,
     PRIMARY KEY (Id_Ticket, Id_Restaurant),
