@@ -62,7 +62,7 @@ CREATE TABLE Menu (
     Plat VARCHAR(255) NOT NULL,
     Id_Restaurant INT,
     FOREIGN KEY (Id_Restaurant) REFERENCES Restaurant(Id_Restaurant) ON DELETE CASCADE
-)
+);
 
 
 -- Relation entre Restaurateur et Menu (1,n)
