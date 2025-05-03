@@ -11,14 +11,17 @@ CREATE TABLE Utilisateur (
     CONSTRAINT CHK_Email CHECK (Email LIKE '%@ucad.edu.sn'),
     Sexe ENUM('Homme', 'Femme') NOT NULL,
     dateNaissance DATE NOT NULL,
-    Role ENUM('Restaurateur', 'Gerant', 'Etudiant', 'Agent') NOT NULL
+    Role ENUM('Restaurateur', 'Gerant', 'Etudiant', 'Agent') NOT NULL,
+    solde_tickets INT DEFAULT 10
 );
 
 -- Table Ticket
 CREATE TABLE Ticket (
     Id_Ticket INT PRIMARY KEY AUTO_INCREMENT,
     Type ENUM('Petit-déjeuner', 'Déjeuner', 'Dîner') NOT NULL,
-    Prix INT NOT NULL
+    Prix INT NOT NULL,
+    est_utilise TINYINT(1) DEFAULT 0,
+    date_validation DATETIME DEFAULT NULL
 );
 
 -- Table Étudiant (Hérite de Utilisateur)
@@ -80,4 +83,45 @@ CREATE TABLE TicketResto (
     PRIMARY KEY (Id_Ticket, Id_Restaurant),
     FOREIGN KEY (Id_Ticket) REFERENCES Ticket(Id_Ticket) ON DELETE CASCADE,
     FOREIGN KEY (Id_Restaurant) REFERENCES Restaurant(Id_Restaurant) ON DELETE CASCADE
+);
+
+-- Table PlatsServis
+CREATE TABLE PlatsServis (
+    Id_PlatServi INT PRIMARY KEY AUTO_INCREMENT,
+    Id_Etudiant INT,
+    Id_Ticket INT,
+    Id_Menu INT,
+    DateServi DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (Id_Etudiant) REFERENCES Etudiant(Id_Etudiant) ON DELETE CASCADE,
+    FOREIGN KEY (Id_Ticket) REFERENCES Ticket(Id_Ticket) ON DELETE CASCADE,
+    FOREIGN KEY (Id_Menu) REFERENCES Menu(Id_Menu) ON DELETE CASCADE
+);
+
+-- Table Statistiques
+CREATE TABLE Statistiques (
+    Id_Statistique INT PRIMARY KEY AUTO_INCREMENT,
+    DateStat DATE NOT NULL,
+    Recette INT NOT NULL,
+    PlatsServis INT NOT NULL,
+    TicketsVendus INT NOT NULL
+);
+
+-- Table ValidationTicket
+CREATE TABLE ValidationTicket (
+    Id_Validation INT PRIMARY KEY AUTO_INCREMENT,
+    Id_Vente INT,
+    Id_Agent INT,
+    DateValidation DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (Id_Vente) REFERENCES VenteTicket(Id_Vente) ON DELETE CASCADE,
+    FOREIGN KEY (Id_Agent) REFERENCES Utilisateur(Id_Utilisateur) ON DELETE CASCADE
+);
+
+-- Table VenteTicket
+CREATE TABLE VenteTicket (
+    Id_Vente INT PRIMARY KEY AUTO_INCREMENT,
+    Id_Ticket INT,
+    Id_Etudiant INT,
+    DateVente DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (Id_Ticket) REFERENCES Ticket(Id_Ticket) ON DELETE CASCADE,
+    FOREIGN KEY (Id_Etudiant) REFERENCES Etudiant(Id_Etudiant) ON DELETE CASCADE
 );

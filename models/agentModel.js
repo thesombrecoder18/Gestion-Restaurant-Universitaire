@@ -36,7 +36,7 @@ const AgentModel = {
 
   async getHistoriqueValidations(Id_Utilisateur) {
     return new Promise((resolve, reject) => {
-      const query = `SELECT * FROM validations WHERE Id_agent = ?`;
+      const query = `SELECT * FROM ValidationTicket WHERE Id_Agent = ?`;
       db.query(query, [Id_Utilisateur], (err, results) => {
         if (err) {
           console.error('Erreur récupération historique :', err);
@@ -46,6 +46,5 @@ const AgentModel = {
       });
     });
   }
-};
-
+} 
 module.exports = AgentModel;
